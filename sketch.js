@@ -15,7 +15,7 @@ function preload() {
   faceMesh = ml5.faceMesh({ maxFaces: 1 });
 
   // Load the texture image that will be mapped onto the face mesh
-  img = loadImage("Zombie_Dan_mesh_map.png");
+  // img = loadImage("Zombie_Dan_mesh_map.png"); // 註解掉這行
   maskImg = loadImage("1.png"); // 載入面具圖
 }
 
