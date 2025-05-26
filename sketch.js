@@ -55,28 +55,28 @@ function draw() {
   if (faces.length > 0) {
     let face = faces[0];
 
-    // 取得下巴輪廓點（0~16）與鼻尖（30）
-    let chinPoints = face.keypoints.slice(0, 17);
-    let noseTip = face.keypoints[30];
+    // 取得左眼外側(36)與右眼外側(45)的座標
+    let leftEye = face.keypoints[36];
+    let rightEye = face.keypoints[45];
+    let nose = face.keypoints[30];
 
-    // 計算下巴區域的包圍盒
-    let minX = Math.min(...chinPoints.map(p => p.x));
-    let maxX = Math.max(...chinPoints.map(p => p.x));
-    let minY = Math.min(...chinPoints.map(p => p.y));
-    let maxY = Math.max(...chinPoints.map(p => p.y));
+    // 眼罩寬度：兩眼外側距離的1.6倍（可依實際面具調整）
+    let eyeDist = dist(leftEye.x, leftEye.y, rightEye.x, rightEye.y);
+    let maskW = eyeDist * 1.6;
+    // 眼罩高度：眼距的0.7倍（可依實際面具調整）
+    let maskH = eyeDist * 0.7;
 
-    // 面具高度從鼻尖到下巴最下方
-    let maskY = noseTip.y;
-    let maskH = maxY - maskY;
-    let maskW = maxX - minX;
-    let maskX = minX;
+    // 眼罩中心點：兩眼中點稍微往下（可依面具圖微調）
+    let maskX = (leftEye.x + rightEye.x) / 2 - maskW / 2;
+    let maskY = (leftEye.y + rightEye.y) / 2 - maskH / 2 + eyeDist * 0.1;
 
     // 貼上面具圖
     image(maskImg, maskX, maskY, maskW, maskH);
 
-    // // 若要顯示臉部偵測點，可取消註解
+    // // 若要顯示偵測點，可取消註解
     // fill(255,0,0); noStroke();
-    // for(let p of chinPoints) ellipse(p.x, p.y, 5, 5);
-    // ellipse(noseTip.x, noseTip.y, 5, 5);
+    // ellipse(leftEye.x, leftEye.y, 5, 5);
+    // ellipse(rightEye.x, rightEye.y, 5, 5);
+    // ellipse(nose.x, nose.y, 5, 5);
   }
 }
