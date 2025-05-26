@@ -55,20 +55,30 @@ function draw() {
   if (faces.length > 0) {
     let face = faces[0];
 
-    // 取得左眼外側(36)與右眼外側(45)的座標
+    // 臉部偵測到的兩眼座標
     let leftEye = face.keypoints[36];
     let rightEye = face.keypoints[45];
-    let nose = face.keypoints[30];
 
-    // 眼罩寬度：兩眼外側距離的1.6倍（可依實際面具調整）
-    let eyeDist = dist(leftEye.x, leftEye.y, rightEye.x, rightEye.y);
-    let maskW = eyeDist * 1.6;
-    // 眼罩高度：眼距的0.7倍（可依實際面具調整）
-    let maskH = eyeDist * 0.7;
+    // 面具圖檔中兩眼洞的中心座標（請根據你的1.png實際設定）
+    let maskLeftEyeX = 80;   // 假設左眼洞中心在(80, 100)
+    let maskLeftEyeY = 100;
+    let maskRightEyeX = 220; // 假設右眼洞中心在(220, 100)
+    let maskRightEyeY = 100;
+    let maskEyeDist = maskRightEyeX - maskLeftEyeX; // 140
 
-    // 眼罩中心點：兩眼中點稍微往下（可依面具圖微調）
-    let maskX = (leftEye.x + rightEye.x) / 2 - maskW / 2;
-    let maskY = (leftEye.y + rightEye.y) / 2 - maskH / 2 + eyeDist * 0.1;
+    // 臉部兩眼的距離
+    let faceEyeDist = dist(leftEye.x, leftEye.y, rightEye.x, rightEye.y);
+
+    // 計算縮放比例
+    let scaleRatio = faceEyeDist / maskEyeDist;
+
+    // 計算面具要貼的位置（讓面具左眼洞對齊臉的左眼）
+    let maskX = leftEye.x - maskLeftEyeX * scaleRatio;
+    let maskY = leftEye.y - maskLeftEyeY * scaleRatio;
+
+    // 計算縮放後的面具寬高
+    let maskW = maskImg.width * scaleRatio;
+    let maskH = maskImg.height * scaleRatio;
 
     // 貼上面具圖
     image(maskImg, maskX, maskY, maskW, maskH);
@@ -77,6 +87,5 @@ function draw() {
     // fill(255,0,0); noStroke();
     // ellipse(leftEye.x, leftEye.y, 5, 5);
     // ellipse(rightEye.x, rightEye.y, 5, 5);
-    // ellipse(nose.x, nose.y, 5, 5);
   }
 }
