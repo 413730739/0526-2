@@ -70,7 +70,7 @@ function draw() {
     let faceEyeDist = dist(leftEye.x, leftEye.y, rightEye.x, rightEye.y);
 
     // 計算縮放比例（加大倍率，例如放大1.8倍）
-    let scaleRatio = (faceEyeDist / maskEyeDist) * 2;
+    let scaleRatio = (faceEyeDist / maskEyeDist) * 5;
 
     // 計算面具要貼的位置（讓面具左眼洞對齊臉的左眼）
     let maskX = leftEye.x - maskLeftEyeX * scaleRatio;
