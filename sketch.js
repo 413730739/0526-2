@@ -76,4 +76,3 @@ function draw() {
     // ellipse(noseTip.x, noseTip.y, 5, 5);
   }
 }
-
