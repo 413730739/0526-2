@@ -62,25 +62,19 @@ function draw() {
     // 取得嘴巴中心點
     let mouth = face.keypoints[66];
 
-    // 面具圖檔中兩眼洞的中心座標（請根據你的1.png實際設定）
-    let maskLeftEyeX = 80;   // 假設左眼洞中心在(80, 100)
-    let maskLeftEyeY = 100;
-    let maskRightEyeX = 220; // 假設右眼洞中心在(220, 100)
-    let maskRightEyeY = 100;
-    let maskEyeDist = maskRightEyeX - maskLeftEyeX; // 140
-
-    // 臉部兩眼的距離
-    let faceEyeDist = dist(leftEye.x, leftEye.y, rightEye.x, rightEye.y);
+    // 額頭中心點（keypoints[10]）
+    let forehead = face.keypoints[10];
 
     // 計算縮放比例（可依需求調整倍率）
     let scaleRatio = (faceEyeDist / maskEyeDist) * 6;
 
-    // 讓面具底部對齊嘴巴
+    // 計算面具縮放後的寬高
     let maskW = maskImg.width * scaleRatio;
     let maskH = maskImg.height * scaleRatio;
-    let maskX = leftEye.x - maskLeftEyeX * scaleRatio;
-    // 讓面具底部對齊嘴巴
-    let maskY = mouth.y - maskH;
+
+    // 讓面具中心對齊額頭中心點
+    let maskX = forehead.x - maskW / 2;
+    let maskY = forehead.y - maskH / 2;
 
     // 貼上面具圖
     image(maskImg, maskX, maskY, maskW, maskH);
@@ -91,3 +85,4 @@ function draw() {
     // ellipse(rightEye.x, rightEye.y, 5, 5);
   }
 }
+
