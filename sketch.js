@@ -28,7 +28,7 @@ function gotFaces(results) {
 }
 
 function setup() {
-  createCanvas(640, 480, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   video = createCapture(VIDEO);
   video.hide();
 
@@ -40,10 +40,14 @@ function setup() {
   uvCoords = faceMesh.getUVCoords();
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
 function draw() {
   // Center the 3D space to align with the canvas
   translate(-width / 2, -height / 2);
-  background(0);
+  background(255, 255, 200); // 淡黃色
 
   // Display the video feed
   image(video, 0, 0);
